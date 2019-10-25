@@ -104,10 +104,11 @@ is possible to declare a variable or method with the name `union`.
   // error[E0262]: invalid lifetime parameter name: `'static`
   fn invalid_lifetime_parameter<'static>(s: &'static str) -> &'static str { s }
   ```
-* In the 2015 edition, [`dyn`] is a keyword when used in a type position
-  followed by a path that does not start with `::`.
 
-  Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
+> **Edition Differences**: In the 2015 edition, [`dyn`] is a keyword when used
+> in a type position followed by a path that does not start with `::`.
+>
+> Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
 > **<sup>Lexer</sup>**\
 > KW_UNION          : `union`\
