@@ -148,27 +148,38 @@ how it is resolved.
 
 ### `::`
 
-Paths starting with `::` are considered to be global paths where the segments of the path
-start being resolved from the crate root. Each identifier in the path must resolve to an
-item.
+Paths starting with `::` are resolved differently in different Rust editions.
 
-> **Edition Differences**: In the 2015 Edition, the crate root contains a variety of
-> different items, including external crates, default crates such as `std` and `core`, and
-> items in the top level of the crate (including `use` imports).
+> **Edition Differences**:
 >
-> Beginning with the 2018 Edition, paths starting with `::` can only reference crates.
-
-```rust
-mod a {
-    pub fn foo() {}
-}
-mod b {
-    pub fn foo() {
-        ::a::foo(); // call a's foo function
-    }
-}
-# fn main() {}
-```
+> In the 2015 edition, paths starting with `::` are resolved relative to the
+> current crate root.
+>
+> Also, the crate root contains default crates such as `std` and `core`.
+>
+> ```rust,edition2015
+> mod a {
+>     pub fn foo() {}
+> }
+> mod b {
+>     pub fn foo() {
+>         ::a::foo(); // call a's foo function
+>         ::std::process::exit(1);
+>     }
+> }
+> # fn main() {}
+> ```
+>
+> Beginning in the 2018 edition, paths starting with `::` are resolved
+> relative to the [extern prelude], and the crate root does not contain
+> default crates.
+>
+> ```rust,edition2018
+> pub fn foo() {
+>     ::std::process::exit(1);
+> }
+> # fn main() {}
+> ```
 
 ### `self`
 
@@ -369,3 +380,4 @@ mod without { // ::without
 [trait implementations]: items/implementations.md#trait-implementations
 [traits]: items/traits.md
 [visibility]: visibility-and-privacy.md
+[extern prelude]: items/extern-crates.md#extern-prelude
