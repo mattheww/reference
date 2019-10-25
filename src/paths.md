@@ -148,27 +148,35 @@ how it is resolved.
 
 ### `::`
 
-Paths starting with `::` are considered to be global paths where the segments of the path
-start being resolved from the crate root. Each identifier in the path must resolve to an
-item.
+Paths starting with `::` are resolved relative to the current crate root.
 
-> **Edition Differences**: In the 2015 Edition, the crate root contains a variety of
-> different items, including external crates, default crates such as `std` and `core`, and
-> items in the top level of the crate (including `use` imports).
->
-> Beginning with the 2018 Edition, paths starting with `::` can only reference crates.
+> **Note**: default crates such as `std` and `core` are automatically added to
+> the crate root.
 
-```rust
+```rust,edition2015
 mod a {
     pub fn foo() {}
 }
 mod b {
     pub fn foo() {
         ::a::foo(); // call a's foo function
+        ::std::process::exit(1);
     }
 }
 # fn main() {}
 ```
+
+> **Edition Differences**: In the 2018 edition, paths starting with `::` are
+> resolved relative to the [extern prelude].
+>
+> Also, `std` and `core` are not added to the crate root.
+>
+> ```rust,edition2018
+> pub fn foo() {
+>     ::std::process::exit(1);
+> }
+> # fn main() {}
+> ```
 
 ### `self`
 
@@ -369,3 +377,4 @@ mod without { // ::without
 [trait implementations]: items/implementations.md#trait-implementations
 [traits]: items/traits.md
 [visibility]: visibility-and-privacy.md
+[extern prelude]: items/extern-crates.md#extern-prelude
