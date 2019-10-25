@@ -191,9 +191,8 @@ let circle_shape = Circle::new();
 let bounding_box = circle_shape.bounding_box();
 ```
 
-> **Edition Differences**: In the 2015 edition, it is possible to declare trait
-> methods with anonymous parameters (e.g. `fn foo(u8)`). This is deprecated and
-> an error as of the 2018 edition. All parameters must have an argument name.
+> **Note**: See [Parameter patterns] for limitations on how the parameters to
+> trait methods are declared.
 
 #### Attributes on method parameters
 
@@ -361,3 +360,4 @@ fn main() {
 [method call operator]: ../expressions/method-call-expr.md
 [path]: ../paths.md
 [regular function parameters]: functions.md#attributes-on-function-parameters 
+[Parameter patterns]: traits.md#parameter-patterns
