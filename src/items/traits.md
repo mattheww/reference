@@ -171,21 +171,8 @@ The [trait implementation] must also begin with the `unsafe` keyword.
 
 ## Parameter patterns
 
-Function or method declarations without a body only allow [IDENTIFIER] or
-`_` [wild card][WildcardPattern] patterns. `mut` [IDENTIFIER] is currently
-allowed, but it is deprecated and will become a hard error in the future.
-<!-- https://github.com/rust-lang/rust/issues/35203 -->
-
-In the 2015 edition, the pattern for a trait function or method parameter is
-optional:
-
-```rust
-trait T {
-    fn f(i32);  // Parameter identifiers are not required.
-}
-```
-
-The kinds of patterns for parameters is limited to one of the following:
+If present, a parameter pattern in a function or method declaration must have
+one of the following forms:
 
 * [IDENTIFIER]
 * `mut` [IDENTIFIER]
@@ -193,16 +180,32 @@ The kinds of patterns for parameters is limited to one of the following:
 * `&` [IDENTIFIER]
 * `&&` [IDENTIFIER]
 
-Beginning in the 2018 edition, function or method parameter patterns are no
-longer optional. Also, all irrefutable patterns are allowed as long as there
-is a body. Without a body, the limitations listed above are still in effect.
+`mut` [IDENTIFIER] is deprecated and will become a hard error in the future.
+<!-- https://github.com/rust-lang/rust/issues/35203 -->
 
-```rust,edition2018
+In the 2015 edition, the pattern for a trait function or method parameter is
+optional:
+
+```rust,edition2015
 trait T {
-    fn f1((a, b): (i32, i32)) {}
-    fn f2(_: (i32, i32));  // Cannot use tuple pattern without a body.
+    fn f(i32);  // Parameter identifiers are not required
 }
 ```
+
+> **Edition Differences**: Beginning in the 2018 edition, if a trait function
+> or method has a body, the limitations on the form of the pattern listed
+> above do not apply; instead any irrefutable pattern is allowed.
+>
+> Also, the pattern for a trait function or method parameter may not be
+> omitted.
+>
+> ```rust,edition2018
+> trait T {
+>     fn f1((a, b): (i32, i32)) {}
+>     fn f2(_: (i32, i32));  // Cannot use tuple pattern without a body.
+> }
+> ```
+
 
 [IDENTIFIER]: ../identifiers.md
 [WildcardPattern]: ../patterns.md#wildcard-pattern
